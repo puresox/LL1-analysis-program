@@ -417,7 +417,16 @@ function getIsLL1() {
   return true;
 }
 
-module.exports = function LL1Judgement(Vn, Vt, P, S) {
+/**
+ * 判断文法是否为LL(1)文法
+ *
+ * @param {any} Vn 非终结符集合
+ * @param {any} Vt 终结符集合
+ * @param {any} P 规则集合
+ * @param {any} S 开始符
+ * @returns
+ */
+function LL1Judgement(Vn, Vt, P, S) {
   [this.Vn, this.Vt, this.P, this.S] = [Vn, Vt, P, S];
   const Vn2null = getVn2null();
   this.Vn2null = Vn2null;
@@ -435,4 +444,6 @@ module.exports = function LL1Judgement(Vn, Vt, P, S) {
     SELECT,
     isLL1,
   };
-};
+}
+
+module.exports = LL1Judgement;

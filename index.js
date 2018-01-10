@@ -11,7 +11,7 @@ const P = new Set();
 /** 开始符 */
 const S = 'E';
 /** 输入串 */
-const input = '';
+const input = 'i+i*i';
 
 // TODO:非LL（1）等价位LL（1）
 /** 标准化P */
@@ -53,7 +53,7 @@ const {
 let LL1AnalysisTable = [];
 let inputAnalysisTable = [];
 if (isLL1) {
-  ({ LL1AnalysisTable, inputAnalysisTable } = LL1Analysis(Vn, Vt, P, S, input, SELECT));
+  ({ LL1AnalysisTable, inputAnalysisTable } = LL1Analysis(Vn, Vt, S, input, SELECT));
 }
 console.log(Vn2null, FIRST, FOLLOW, SELECT, isLL1, LL1AnalysisTable, inputAnalysisTable);
 
