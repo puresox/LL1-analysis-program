@@ -6,24 +6,14 @@ const Vn = new Set();
 /** 终结符 */
 const Vt = new Set();
 /** 规则 */
-const unformattedP = new Set([
-  'S->AB',
-  'S->bC',
-  'A->ε',
-  'A->b',
-  'B->ε',
-  'B->aD',
-  'C->AD',
-  'C->b',
-  'D->aS',
-  'D->c',
-]);
+const unformattedP = new Set(['E->TA', 'A->+TA|ε', 'T->FB', 'B->*FB|ε', 'F->i|(E)']);
 const P = new Set();
 /** 开始符 */
-const S = 'S';
+const S = 'E';
 /** 输入串 */
 const input = '';
 
+// TODO:非LL（1）等价位LL（1）
 /** 标准化P */
 unformattedP.forEach((rule) => {
   const [l, r] = rule.split('->');
@@ -59,9 +49,12 @@ P.forEach((rule) => {
 const {
   Vn2null, FIRST, FOLLOW, SELECT, isLL1,
 } = LL1Judgement(Vn, Vt, P, S);
-/** 构造预测分析表 */
+/** 构造预测分析表和生成对符号串的分析过程 */
+let LL1AnalysisTable = [];
+let inputAnalysisTable = [];
 if (isLL1) {
-  LL1Analysis(input, SELECT);
+  ({ LL1AnalysisTable, inputAnalysisTable } = LL1Analysis(Vn, Vt, P, S, input, SELECT));
 }
+console.log(Vn2null, FIRST, FOLLOW, SELECT, isLL1, LL1AnalysisTable, inputAnalysisTable);
 
-console.log(Vn2null, FIRST, FOLLOW, SELECT, isLL1);
+// TODO:界面

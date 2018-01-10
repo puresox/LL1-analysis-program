@@ -410,7 +410,7 @@ function getIsLL1() {
       });
     });
     const SELECTSet = new Set(SELECTArray);
-    if (SELECTArray.length !== SELECTSet.length) {
+    if (SELECTArray.length !== [...SELECTSet].length) {
       return false;
     }
   }
