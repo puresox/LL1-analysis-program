@@ -1,0 +1,27 @@
+{
+  "name": "ll1-analysis-program",
+  "version": "0.0.1",
+  "description": "基于 LL(1)方法的语法分析程序（编译原理课程设计）",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/puresox/LL1-analysis-program.git"
+  },
+  "keywords": [
+    "LL1"
+  ],
+  "author": "puresox",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/puresox/LL1-analysis-program/issues"
+  },
+  "homepage": "https://github.com/puresox/LL1-analysis-program#readme",
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.7.0"
+  }
+}
