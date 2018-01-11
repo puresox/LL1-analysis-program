@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>LL(1)方法的语法分析</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+    crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <% if (error) { %>
+      <div class="row">
+        <div class="col">
+          <h2>
+            <%= error %>
+              <p>
+                <a href="/">请重新输入</a>
+              </p>
+          </h2>
+        </div>
+      </div>
+      <% } else { %>
+        <!-- 能否推出空非终结符表 -->
+        <div class="row">
+          <div class="col">
+            <br>
+            <div class="table-responsive">
+              <h5>能否推出空非终结符表:</h5>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <% Object.keys(Vn2null).forEach(function(vn){ %>
+                      <th scope="col">
+                        <%= vn %>
+                      </th>
+                      <% }); %>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <% Object.values(Vn2null).forEach(function(bool){ %>
+                      <td>
+                        <%= bool %>
+                      </td>
+                      <% }); %>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- P，FIRST，FOLLOW，SELECT集合 -->
+        <div class="row">
+          <div class="col">
+            G[S]:
+            <br>
+            <% P.forEach(function(rule){ %>
+              <%= rule %>
+                <br>
+                <% }); %>
+          </div>
+          <div class="col">
+            <% Object.keys(FIRST).forEach(function(vn){ %>
+              FIRST(
+              <%= vn %>
+                ) = {
+                <%= [...FIRST[vn]].join(', ') %>
+                  }
+                  <br>
+                  <% }); %>
+          </div>
+          <div class="col">
+            <% Object.keys(FOLLOW).forEach(function(vn){ %>
+              FOLLOW(
+              <%= vn %>
+                ) = {
+                <%= [...FOLLOW[vn]].join(', ') %>
+                  }
+                  <br>
+                  <% }); %>
+          </div>
+          <div class="col">
+            <% Object.keys(SELECT).forEach(function(vn){ %>
+              <% Object.keys(SELECT[vn]).forEach(function(rule){ %>
+                SELECT(
+                <%= rule %>
+                  ) = {
+                  <%= [...SELECT[vn][rule]].join(', ') %>
+                    }
+                    <br>
+                    <% });}); %>
+          </div>
+        </div>
+        <!-- 表达式文法的预测分析表和输入符号串的分析过程 -->
+        <div class="row">
+          <% if (!isLL1) { %>
+            <div class="col align-self-center">
+              <h1>不是LL(1)文法</h1>
+            </div>
+            <% } else { %>
+              <!-- 表达式文法的预测分析表 -->
+              <div class="col">
+                <br>
+                <div class="table-responsive">
+                  <h5>表达式文法的预测分析表: </h5>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <% LL1AnalysisTable[0].forEach(function(head){ %>
+                          <th scope="col">
+                            <%= head %>
+                          </th>
+                          <% }); %>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(var i=1; i<LL1AnalysisTable.length; i++) {%>
+                        <tr>
+                          <% LL1AnalysisTable[i].forEach(function(body, index){ %>
+                            <% if (index === 0) { %>
+                              <th scope="row">
+                                <%= body %>
+                              </th>
+                              <% } else { %>
+                                <td>
+                                  <%= body %>
+                                </td>
+                                <% } %>
+                                  <% }); %>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- 输入符号串的分析过程 -->
+              <div class="col">
+                <br>
+                <div class="table-responsive">
+                  <h5>输入符号串的分析过程:</h5>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <% inputAnalysisTable[0].forEach(function(head){ %>
+                          <th scope="col">
+                            <%= head %>
+                          </th>
+                          <% }); %>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(var i=1; i<inputAnalysisTable.length; i++) {%>
+                        <tr>
+                          <% inputAnalysisTable[i].forEach(function(body, index){ %>
+                            <% if (index === 0) { %>
+                              <th scope="row">
+                                <%= body %>
+                              </th>
+                              <% } else { %>
+                                <td>
+                                  <%= body %>
+                                </td>
+                                <% } %>
+                                  <% }); %>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <% } %>
+        </div>
+        <% } %>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
