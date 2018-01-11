@@ -17,8 +17,6 @@ function LL1(unformattedP, input) {
   /** 开始符 */
   const S = 'S';
 
-  // TODO:非LL（1）等价位LL（1）
-
   /** 标准化P */
   unformattedP.forEach((rule) => {
     const [l, r] = rule.split('->');
@@ -49,19 +47,83 @@ function LL1(unformattedP, input) {
       }
     });
   });
+  /** 判断是否含有左公因子 */
+  let hasLCF = false;
+  Vn.forEach((vn) => {
+    const LCFArray = [];
+    const LCFSet = new Set();
+    P.forEach((rule) => {
+      const [l, r] = rule.split('->');
+      l.trim();
+      r.trim();
+      const Vr = r.split('');
+      const firstv = Vr[0];
+      if (l === vn && firstv !== 'ε') {
+        LCFArray.push(firstv);
+        LCFSet.add(firstv);
+      }
+    });
+    if (LCFArray.length !== [...LCFSet].length) {
+      hasLCF = true;
+    }
+  });
+  /** 判断是否有左递归 */
+  let hasLRecursion = false;
+  Vn.forEach((v) => {
+    const VRecursion = new Set();
+    function recursion(vn) {
+      P.forEach((rule) => {
+        const [l, r] = rule.split('->');
+        l.trim();
+        r.trim();
+        if (l === vn) {
+          const Vr = r.split('');
+          const firstv = Vr[0];
+          if (Vn.has(firstv)) {
+            if (VRecursion.has(firstv)) {
+              hasLRecursion = true;
+            } else {
+              VRecursion.add(firstv);
+              recursion(firstv);
+            }
+          }
+        }
+      });
+    }
+    recursion(v);
+  });
 
-  /** 判断文法是否为LL(1)文法 */
-  const {
-    Vn2null, FIRST, FOLLOW, SELECT, isLL1,
-  } = LL1Judgement(Vn, Vt, P, S);
-  /** 构造预测分析表和生成对符号串的分析过程 */
+  let Vn2null;
+  let FIRST;
+  let FOLLOW;
+  let SELECT;
+  let isLL1;
   let LL1AnalysisTable = [];
   let isSentence = false;
   let inputAnalysisTable = [];
-  if (isLL1) {
-    ({ LL1AnalysisTable, isSentence, inputAnalysisTable } = LL1Analysis(Vn, Vt, S, input, SELECT));
+
+  if (hasLCF || hasLRecursion) {
+    isLL1 = false;
+  } else {
+    /** 判断文法是否为LL(1)文法 */
+    ({
+      Vn2null, FIRST, FOLLOW, SELECT, isLL1,
+    } = LL1Judgement(Vn, Vt, P, S));
+    /** 构造预测分析表和生成对符号串的分析过程 */
+    if (isLL1) {
+      ({ LL1AnalysisTable, isSentence, inputAnalysisTable } = LL1Analysis(
+        Vn,
+        Vt,
+        S,
+        input,
+        SELECT,
+      ));
+    }
   }
+
   return {
+    hasLCF,
+    hasLRecursion,
     Vn,
     Vt,
     P,

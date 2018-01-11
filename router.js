@@ -8,16 +8,18 @@ router
     await ctx.render('index');
   })
   .post('/result', async (ctx) => {
-    let { input, PText } = ctx.request.body;
+    let { input } = ctx.request.body;
+    const { PText } = ctx.request.body;
     let unformattedP;
     if (!input || !PText) {
-      PText = '';
       unformattedP = new Set(['S->TA', 'A->+TA|ε', 'T->FB', 'B->*FB|ε', 'F->i|(S)']);
       input = 'i+i*i';
     } else {
       unformattedP = new Set(PText.split('\r\n'));
     }
     let error;
+    let hasLCF;
+    let hasLRecursion;
     let Vn;
     let Vt;
     let P;
@@ -31,6 +33,8 @@ router
     let inputAnalysisTable;
     try {
       ({
+        hasLCF,
+        hasLRecursion,
         Vn,
         Vt,
         P,
@@ -52,6 +56,8 @@ router
       }
     }
     await ctx.render('result', {
+      hasLCF,
+      hasLRecursion,
       Vn,
       Vt,
       P,

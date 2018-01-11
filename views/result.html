@@ -12,14 +12,21 @@
 
 <body>
   <div class="container">
-    <% if (error) { %>
+    <% if (hasLCF || hasLRecursion) { %>
       <div class="row">
-        <div class="col">
+        <div class="col align-self-center">
           <h2>
-            <%= error %>
-              <p>
-                <a href="/">请重新输入</a>
-              </p>
+            不是LL(1)文法
+            <% if (hasLCF) { %>
+              ，含有左公因子
+              <% } %>
+                <% if (hasLRecursion) { %>
+                  ，含有左递归
+                  <% } %>
+                    。
+                    <p>
+                      <a href="/">请重新输入</a>
+                    </p>
           </h2>
         </div>
       </div>
