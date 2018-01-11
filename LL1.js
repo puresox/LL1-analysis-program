@@ -90,6 +90,7 @@ function LL1(unformattedP, input) {
         }
       });
     }
+    VRecursion.add(v);
     recursion(v);
   });
 
