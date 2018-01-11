@@ -27,6 +27,17 @@
         <div class="row">
           <!-- 左部 -->
           <div class="col-3">
+            <!-- 文法 -->
+            <div class="row">
+              <div class="col">
+                <br> G[S]:
+                <br>
+                <% P.forEach(function(rule){ %>
+                  <%= rule %>
+                    <br>
+                    <% }); %>
+              </div>
+            </div>
             <!-- Vn,Vt -->
             <div class="row">
               <div class="col">
@@ -37,18 +48,6 @@
                   <%= [...Vt].join(', ') %>
                     }
                     <br>
-              </div>
-            </div>
-            <!-- 文法 -->
-            <div class="row">
-              <div class="col">
-                <br> G[S]:
-                <br>
-                <% P.forEach(function(rule){ %>
-                  <%= rule %>
-                    <br>
-                    <% }); %>
-                      <br>
               </div>
             </div>
             <!-- FIRST -->
@@ -63,7 +62,6 @@
                       }
                       <br>
                       <% }); %>
-                        <br>
               </div>
             </div>
             <!-- FOLLOW -->
@@ -78,7 +76,6 @@
                       }
                       <br>
                       <% }); %>
-                        <br>
               </div>
             </div>
             <!-- SELECT -->
@@ -94,17 +91,8 @@
                         }
                         <br>
                         <% });}); %>
-                          <br>
               </div>
             </div>
-
-            <div class="row">
-              <div class="col">
-                <br>
-                <br>
-              </div>
-            </div>
-
           </div>
           <!-- 右部 -->
           <div class="col-9">
