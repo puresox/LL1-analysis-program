@@ -15,7 +15,7 @@ function LL1(unformattedP, input) {
   /** 规则 */
   const P = new Set();
   /** 开始符 */
-  const S = 'E';
+  const S = 'S';
 
   // TODO:非LL（1）等价位LL（1）
 
@@ -56,11 +56,14 @@ function LL1(unformattedP, input) {
   } = LL1Judgement(Vn, Vt, P, S);
   /** 构造预测分析表和生成对符号串的分析过程 */
   let LL1AnalysisTable = [];
+  let isSentence = false;
   let inputAnalysisTable = [];
   if (isLL1) {
-    ({ LL1AnalysisTable, inputAnalysisTable } = LL1Analysis(Vn, Vt, S, input, SELECT));
+    ({ LL1AnalysisTable, isSentence, inputAnalysisTable } = LL1Analysis(Vn, Vt, S, input, SELECT));
   }
   return {
+    Vn,
+    Vt,
     P,
     Vn2null,
     FIRST,
@@ -68,6 +71,7 @@ function LL1(unformattedP, input) {
     SELECT,
     isLL1,
     LL1AnalysisTable,
+    isSentence,
     inputAnalysisTable,
   };
 }

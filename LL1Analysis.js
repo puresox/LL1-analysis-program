@@ -64,6 +64,7 @@ function getinputAnalysisTable() {
     } else {
       /** 分析栈最后一个符号的产生式 */
       const rules = Object.keys(SELECT[lastOfStack]);
+      let includeV = false;
       for (let i = 0; i < rules.length; i += 1) {
         const rule = rules[i];
         if (SELECT[lastOfStack][rule].has(firstOfLeft)) {
@@ -76,12 +77,23 @@ function getinputAnalysisTable() {
             }
           }
           inputAnalysisTable.push([index + 1, stack.join(''), line[2], '']);
+          includeV = true;
           break;
         }
       }
+      if (includeV === false) {
+        inputAnalysisTable[index][3] = '出错';
+        return {
+          isSentence: false,
+          inputAnalysisTable,
+        };
+      }
     }
   }
-  return inputAnalysisTable;
+  return {
+    isSentence: true,
+    inputAnalysisTable,
+  };
 }
 
 /**
@@ -97,8 +109,8 @@ function getinputAnalysisTable() {
 function LL1Analysis(Vn, Vt, S, input, SELECT) {
   [this.Vn, this.Vt, this.S, this.input, this.SELECT] = [Vn, Vt, S, input, SELECT];
   const LL1AnalysisTable = getLL1AnalysisTable();
-  const inputAnalysisTable = getinputAnalysisTable();
-  return { LL1AnalysisTable, inputAnalysisTable };
+  const { isSentence, inputAnalysisTable } = getinputAnalysisTable();
+  return { LL1AnalysisTable, isSentence, inputAnalysisTable };
 }
 
 module.exports = LL1Analysis;
