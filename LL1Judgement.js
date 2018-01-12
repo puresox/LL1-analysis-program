@@ -377,7 +377,7 @@ function getSELECTSets() {
     r.trim();
     const Vr = r.split('');
     if (Vr2null(Vr, Vt, Vn2null)) {
-      SELECTSet = FOLLOW[l];
+      SELECTSet = new Set(FOLLOW[l]);
       const FIRSTSet = FIRSTVr(Vr, Vn, Vt, Vn2null, FIRST);
       FIRSTSet.forEach((v) => {
         if (v !== 'ε') {
